@@ -15,6 +15,8 @@ import Card from "./Card";
  * App --> Carousel --> Card
  */
  function Carousel({ photos, title }) {
+
+  // PAM: use of state here to flip through images
   const [currCardIdx, setCurrCardIdx] = useState(0);
 
   const currCard = photos[currCardIdx];
