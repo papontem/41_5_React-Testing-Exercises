@@ -61,13 +61,16 @@ it("works when you click on the right arrow, then the left arrow", function () {
 	expect(
 		container.querySelector('img[alt="testing image 2"]')
 	).not.toBeInTheDocument();
-
-	// get the arrow buttons <- & ->
-	const leftArrow = container.querySelector(".bi-arrow-left-circle");
-	const rightArrow = container.querySelector(".bi-arrow-right-circle");
 	
+	// get the right arrow button ->
+	const rightArrow = container.querySelector(".bi-arrow-right-circle");
+
 	// move forward in the carousel 1 -> 2 - 3
 	fireEvent.click(rightArrow);
+
+	// get the left arrow button <-
+	const leftArrow = container.querySelector(".bi-arrow-left-circle");
+
 	// expect the second image to show, but not the first
 	expect(
 		container.querySelector('img[alt="testing image 1"]')
@@ -78,6 +81,7 @@ it("works when you click on the right arrow, then the left arrow", function () {
 
 	// move backward in the carousel 1 <- 2 - 3
 	fireEvent.click(leftArrow);
+
 	// expect the first image to show, but not the second
 	expect(
 		container.querySelector('img[alt="testing image 1"]')
@@ -85,4 +89,28 @@ it("works when you click on the right arrow, then the left arrow", function () {
 	expect(
 		container.querySelector('img[alt="testing image 2"]')
 	).not.toBeInTheDocument();
+});
+
+// PAM: Part 4 Write a (failing) test to check that the left arrow is missing when you’re on the first image, and that the right arrow is missing when you’re on the last image.
+
+it("left arrow should not be rendered when on the first image and right arrow is not rendered on the last image", () => {
+	const { container } = render(
+		<Carousel photos={TEST_IMAGES} title="images for testing" />
+	);
+
+	// expect the left arrow to be missing, the right arrow to not be missing
+	expect(container.querySelector(".bi-arrow-right-circle")).toBeInTheDocument();
+	expect(
+		container.querySelector(".bi-arrow-left-circle")
+	).not.toBeInTheDocument();
+
+	// move forward in the carousel to last img 1 -> 2 -> 3
+	fireEvent.click(container.querySelector(".bi-arrow-right-circle"));
+	fireEvent.click(container.querySelector(".bi-arrow-right-circle"));
+
+	// expect the left arrow to not be missing, the right arrow to be missing
+	expect(
+		container.querySelector(".bi-arrow-right-circle")
+	).not.toBeInTheDocument();
+	expect(container.querySelector(".bi-arrow-left-circle")).toBeInTheDocument();
 });
